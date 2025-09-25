@@ -52,7 +52,13 @@ export class UsersService {
 
   async getUserByUid(uid: string): Promise<User> {
     const user = await this.UserRepo.findOneBy({ uid })
+
     return plainToInstance(User, user, { excludeExtraneousValues: true });
+  }
+
+  async getUserForAuth(uid: string): Promise<User | null> {
+    const user = await this.UserRepo.findOneBy({ uid })
+    return user;
   }
 
   async updateUser(uid: string, updateUserDto: UpdateUserDto) {
