@@ -23,7 +23,7 @@ import { AppModules } from './modules';
         synchronize: true
       })
     }),
-    ...AppModules
+    ...AppModules,
   ],
   controllers: [AppController],
   providers: [AppService],

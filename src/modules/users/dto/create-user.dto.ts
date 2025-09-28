@@ -1,4 +1,3 @@
-import { Optional } from '@nestjs/common';
 import { IsBoolean, IsOptional, IsPhoneNumber, IsString } from 'class-validator'
 
 export class CreateUserDto {
