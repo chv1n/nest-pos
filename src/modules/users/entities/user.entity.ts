@@ -1,13 +1,14 @@
-import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { Exclude, Expose } from 'class-transformer';
+import { Role } from "../../roles/entities/role.entity";
 
 @Entity({ name: "users" })
 export class User {
     @PrimaryColumn()
     @Expose()
     uid: string;
-    
-    @Column({ unique : true })
+
+    @Column({ unique: true })
     @Expose()
     phone: string;
 
@@ -19,7 +20,7 @@ export class User {
     @Expose()
     last_name: string;
 
-    @Column({ nullable : false})
+    @Column({ nullable: false })
     @Exclude()
     passwordHashed: string;
 
@@ -27,13 +28,17 @@ export class User {
     @Expose()
     role_id: string;
 
+    @ManyToOne(() => Role)        
+    @JoinColumn({ name: "role_id" }) 
+    role: Role;
+
     @Column({ type: 'boolean', default: true })
     @Expose()
     is_active: boolean;
 
     @CreateDateColumn()
     @Expose()
-    createdAt: Date;   
+    createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;

@@ -32,8 +32,6 @@ export class UsersController {
     return this.usersService.getUserByUid(uid);
   }
 
-
-
   @Post()
   @ResponseMessage('Create user successfully')
   async createUser(@Body() createUserDto: CreateUserDto) {
