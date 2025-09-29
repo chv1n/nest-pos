@@ -20,8 +20,12 @@ export class AuthService {
   }
 
   async login(user: any) {
-    console.log('user passed to login():', user);
-    const payload = { phone: user.phone, sub: user.uid };
+    const payload = {
+      phone: user.phone,
+      role: user.role.role_name,
+      sub: user.uid
+    };
+    console.log(payload)
     return this.jwtService.sign(payload);
   }
 
