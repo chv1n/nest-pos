@@ -20,13 +20,16 @@ export class RolesGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
 
+    console.log("requiredRoles in guard" ,requiredRoles.map(r => r.toLowerCase()))
+    console.log("user.role in guard" ,user.role.toLowerCase())
+
     if (!user?.role) {
       throw new ForbiddenException('No role found');
     }
 
-    const userRoles = Array.isArray(user.role) ? user.role : [user.role];
+    const userRoles = Array.isArray(user.role) ? user.role.toLowerCase() : [user.role.toLowerCase()];
 
-    const hasRole = requiredRoles.some(role => userRoles.includes(role));
+    const hasRole = requiredRoles.some(role => userRoles.includes(role.toLowerCase()));
 
     if (!hasRole) {
       throw new ForbiddenException('Insufficient role');

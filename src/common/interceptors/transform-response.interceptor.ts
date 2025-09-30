@@ -15,7 +15,6 @@ export class TransformResponseInterceptor implements NestInterceptor {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<Request>();
 
-    // get message from @SetMetadata
     const customMessage =
       this.reflector.get<string>('custom:message', context.getHandler()) ?? '';
 
