@@ -52,7 +52,23 @@ export class UsersService {
 
   async getUserByUid(uid: string): Promise<User> {
     const user = await this.UserRepo.findOneBy({ uid })
+
     return plainToInstance(User, user, { excludeExtraneousValues: true });
+  }
+
+  async getUserForAuth(uid: string): Promise<User | null> {
+    const result = await this.UserRepo.createQueryBuilder('u')
+      .leftJoinAndSelect('u.role', 'r')
+      .where('u.uid = :uid', { uid })
+      .select([
+        'u.uid',
+        'u.phone',
+        'u.passwordHashed',
+        'r.role_name',
+      ])
+      .getOne();
+      console.log(result)
+    return result;
   }
 
   async updateUser(uid: string, updateUserDto: UpdateUserDto) {

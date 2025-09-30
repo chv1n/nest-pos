@@ -12,11 +12,13 @@
 แอดมินจะสร้างรหัสให้ Manager และ Maneger จะสร้างรหัสให้ พนักงาน
 
 [TODO]:
+[/] Login Auth JWT
+[] Role Management
+    [] Admin can CRUD Role
 [] CRUD Users
-    [] Basic CRUD
+    [/] Basic CRUD
     [] Admin can create/update manager/cashier account
     [] Manager can create/update cashier account
-[] Login Jwt
 ==============================================================
 
 [ ]

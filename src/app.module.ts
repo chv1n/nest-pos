@@ -8,7 +8,7 @@ import { AppModules } from './modules';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,7 +23,7 @@ import { AppModules } from './modules';
         synchronize: true
       })
     }),
-    ...AppModules
+    ...AppModules,
   ],
   controllers: [AppController],
   providers: [AppService],
