@@ -6,8 +6,9 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
 
-@Controller('roles')
 @UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Admin')
+@Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
@@ -17,15 +18,14 @@ export class RolesController {
   }
 
   @Get()
-  @Roles('Manager')
   findAll() {
     return this.rolesService.findAll();
   }
 
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return this.rolesService.update(id, updateRoleDto);
-    
   }
 
 }
