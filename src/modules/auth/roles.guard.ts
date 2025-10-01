@@ -12,7 +12,10 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (!requiredRoles || requiredRoles.length === 0) {
       return true; 
@@ -20,13 +23,14 @@ export class RolesGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
 
+
     if (!user?.role) {
       throw new ForbiddenException('No role found');
     }
 
-    const userRoles = Array.isArray(user.role) ? user.role : [user.role];
+    const userRoles = Array.isArray(user.role) ? user.role.toLowerCase() : [user.role.toLowerCase()];
 
-    const hasRole = requiredRoles.some(role => userRoles.includes(role));
+    const hasRole = requiredRoles.some(role => userRoles.includes(role.toLowerCase()));
 
     if (!hasRole) {
       throw new ForbiddenException('Insufficient role');
