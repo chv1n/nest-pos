@@ -67,7 +67,6 @@ export class UsersService {
         'r.role_name',
       ])
       .getOne();
-      console.log(result)
     return result;
   }
 
@@ -92,19 +91,6 @@ export class UsersService {
 
   }
 
-  async updateIsActive(uid: string, updateUserDto: UpdateUserDto) {
-    try {
-      const targetUser = await this.getUserByUid(uid);
-      if (!targetUser) { throw new HttpException("Update active status failed.", HttpStatus.NOT_FOUND) }
 
-      const updated = Object.assign(targetUser, updateUserDto)
-      const userSaved = await this.UserRepo.save(updated);
-      return plainToInstance(User, userSaved, { excludeExtraneousValues: true });
-    }
-    catch (e) {
-      console.error(e)
-      throw new HttpException("Update active status failed.", HttpStatus.BAD_REQUEST);
-    }
-  }
 
 }

@@ -21,8 +21,7 @@ export class UsersController {
   @Get('profile')
   @ResponseMessage('Get my profile successfully')
   async getProfile(@Request() req) {
-    console.log('getProfile working')
-    const user = await this.usersService.getUserByUid('UID03')
+    const user = await this.usersService.getUserByUid(req.user.userId)
     return user
   }
 
@@ -45,9 +44,5 @@ export class UsersController {
     return this.usersService.updateUser(uid, updateUserDto);
   }
 
-  @Put(':uid/is-active')
-  @ResponseMessage('Updated active status successfully')
-  updateIsActive(@Param('uid') uid: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateIsActive(uid, updateUserDto);
-  }
+
 }
