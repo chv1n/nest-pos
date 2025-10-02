@@ -1,25 +1,34 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, UseGuards } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
+import { ResponseMessage } from 'src/common/decorator/response-message.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('Admin')
+@Roles('Admin', 'Manager')
 @Controller('roles')
 export class RolesController {
-  constructor(private readonly rolesService: RolesService) {}
+  constructor(private readonly rolesService: RolesService) { }
 
   @Post()
+  @ResponseMessage('Create Role successfully')
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.rolesService.create(createRoleDto);
   }
 
   @Get()
+  @ResponseMessage('Get all successfully')
   findAll() {
     return this.rolesService.findAll();
+  }
+
+  @Get('by-id/:id')
+  @ResponseMessage('Get user by uid successfully')
+  getUserByUid(@Param('id') id: string) {
+    return this.rolesService.getRoleById(id);
   }
 
 

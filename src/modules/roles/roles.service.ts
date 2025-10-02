@@ -39,6 +39,10 @@ export class RolesService {
     return roles;
   }
 
+  async getRoleById(role_id : string) {
+    const role = await this.RoleRepo.findOneBy({role_id});
+    return role;
+  }
 
   async update(role_id: string, updateRoleDto: UpdateRoleDto) {
     try {

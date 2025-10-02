@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Put, Param, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseMessage } from 'src/common/decorator/response-message.decorator';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from 'src/common/decorator/roles.decorator';
 
-
-
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Admin')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -18,24 +20,26 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles('Admin','Manager','Cashier')
   @Get('profile')
   @ResponseMessage('Get my profile successfully')
-  async getProfile(@Request() req) {
-    console.log('getProfile working')
-    const user = await this.usersService.getUserByUid('UID03')
+  async getProfile(@Req() req) {
+    const user = await this.usersService.getUserByUid(req.user.userId)
     return user
   }
 
   @Get('by-uid/:uid')
+  @Roles('Admin','Manager')
   @ResponseMessage('Get user by uid successfully')
-  getUserByUid(@Param('uid') uid: string) {
-    return this.usersService.getUserByUid(uid);
+  async getUserByUid(@Param('uid') uid: string) {
+    return await this.usersService.getUserByUid(uid);
   }
 
   @Post()
+  @Roles('Admin','Manager')
   @ResponseMessage('Create user successfully')
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    const userData = await this.usersService.createUser(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto, @Req() req) {
+    const userData = await this.usersService.createUser(createUserDto, req.user);
     return userData;
   }
 
@@ -45,9 +49,5 @@ export class UsersController {
     return this.usersService.updateUser(uid, updateUserDto);
   }
 
-  @Put(':uid/is-active')
-  @ResponseMessage('Updated active status successfully')
-  updateIsActive(@Param('uid') uid: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateIsActive(uid, updateUserDto);
-  }
+
 }
