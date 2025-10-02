@@ -13,12 +13,12 @@
 
 [TODO]:
 [/] Login Auth JWT
-[] Role Management
-    [] Admin can CRUD Role
-[] CRUD Users
+[/] Role Management
+    [/] Admin can CRUD Role
+[/] CRUD Users
     [/] Basic CRUD
-    [] Admin can create/update manager/cashier account
-    [] Manager can create/update cashier account
+    [/] Admin can create/update manager/cashier account
+    [/] Manager can create/update cashier account
 ==============================================================
 
 [ ]
