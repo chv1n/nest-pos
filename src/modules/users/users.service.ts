@@ -6,17 +6,23 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
+import { acceptCreateUser } from '../roles/policies/role-policies';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly UserRepo: Repository<User>
+    private readonly UserRepo: Repository<User>,
+    private readonly RoleService: RolesService
   ) { }
 
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto, currentUser : any) {
     try {
+      const targetRole = await this.RoleService.getRoleById(createUserDto.role_id!)
+      if(!targetRole) throw new HttpException("This role_id is not define", HttpStatus.NOT_FOUND)
+      acceptCreateUser(currentUser.role, targetRole?.role_name)
       const lastUser = await this.UserRepo
         .createQueryBuilder('u')
         .orderBy('u.uid', "DESC")
