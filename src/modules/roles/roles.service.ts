@@ -16,10 +16,10 @@ export class RolesService {
   async create(createRoleDto: CreateRoleDto) {
     try {
       const lastRole = await this.RoleRepo
-        .createQueryBuilder('u')
-        .orderBy('u.role_id', "DESC")
+        .createQueryBuilder('r')
+        .orderBy('r.role_id', "DESC")
         .getOne();
-      const lastIdNumber = lastRole ? parseInt(lastRole.role_id.slice(5)) : 0;
+      const lastIdNumber = lastRole ? parseInt(lastRole.role_id.slice(4)) : 0;
       const newId = `ROLE0${lastIdNumber + 1}`;
       const newRole = this.RoleRepo.create({
         role_id: newId,
