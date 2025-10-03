@@ -5,8 +5,8 @@ export class CreateRoleDto {
     @IsString()
     role_name: string;
 
-    @IsOptional()
     @IsBoolean()
+    @IsOptional()
     is_active?: boolean;
 
 }
