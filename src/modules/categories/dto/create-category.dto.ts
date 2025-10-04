@@ -1,11 +1,11 @@
-import { IsOptional, IsString } from 'class-validator'
+import { IsBoolean, IsOptional, IsString } from 'class-validator'
 
 export class CreateCategoryDto {
 
     @IsString()
     categ_name: string;
 
-    @IsString()
+    @IsBoolean()
     @IsOptional()
     is_active? : boolean;
 
