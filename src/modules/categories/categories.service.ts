@@ -13,7 +13,6 @@ export class CategoriesService {
   private readonly CategRepo: Repository<Category>) { }
 
   async create(createCategoryDto: CreateCategoryDto) {
-
     try {
       const lastCateg = await this.CategRepo
         .createQueryBuilder('c')
@@ -27,24 +26,30 @@ export class CategoriesService {
       })
       return await this.CategRepo.save(createCateg)
     } catch (e) {
-      console.error("Error in category service : " , e)
+      console.error("Error in category service : ", e)
       throw new HttpException("Create category failed!", HttpStatus.BAD_REQUEST);
     }
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    return await this.CategRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string) {
+    return await this.CategRepo.findOneBy({ categ_id: id });
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(categ_id: string, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const categ = await this.CategRepo.findOneBy({ categ_id })
+      if (!categ) throw new HttpException("Update Category failed.", HttpStatus.NOT_FOUND)
+      const updated = Object.assign(categ, updateCategoryDto)
+      return await this.CategRepo.save(updated)
+    } catch (e) {
+      console.error(e)
+      throw new HttpException("Update Category failed.", HttpStatus.BAD_REQUEST)
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
-  }
+
 }
