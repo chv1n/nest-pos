@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Product } from 'src/modules/products/entities/product.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity("categories")
 export class Category {
@@ -9,6 +10,9 @@ export class Category {
     categ_name: string;
 
     @Column({ default: true })
-    is_active : boolean;
+    is_active: boolean;
 
+
+    @OneToMany(() => Product, product => product.category)
+    products: Product[]
 }
