@@ -6,7 +6,7 @@ export class Category {
     @PrimaryColumn()
     categ_id: string;
 
-    @Column()
+    @Column({ unique: true })
     categ_name: string;
 
     @Column({ default: true })

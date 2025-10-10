@@ -3,7 +3,7 @@ import { IsBoolean, IsOptional, IsPhoneNumber, IsString } from 'class-validator'
 export class CreateUserDto {
     @IsString()
     @IsOptional()
-    uid?: string
+    uid: string
 
     @IsString()
     @IsPhoneNumber('TH', { message: 'หมายเลขโทรศัพท์ไม่ถูกต้อง' })
@@ -16,9 +16,10 @@ export class CreateUserDto {
     last_name: string;
 
     @IsString()
-    role_id?: string;
+    @IsOptional()
+    role_id: string;
 
     @IsBoolean()
     @IsOptional()
-    is_active?: boolean;
+    is_active: boolean;
 }
