@@ -23,6 +23,7 @@ export class UsersService {
       const targetRole = await this.RoleService.getRoleById(createUserDto.role_id!)
       if(!targetRole) throw new HttpException("This role_id is not define", HttpStatus.NOT_FOUND)
       acceptCreateUser(currentUser.role, targetRole?.role_name)
+
       const lastUser = await this.UserRepo
         .createQueryBuilder('u')
         .orderBy('u.uid', "DESC")
@@ -30,6 +31,7 @@ export class UsersService {
       const lastIdNumber = lastUser ? parseInt(lastUser.uid.slice(3)) : 0;
       const newUid = `UID0${String(lastIdNumber + 1)}`;
       const passwordHashed = await bcrypt.hash(createUserDto.phone.slice(-6), 10);
+      
       const newUser = this.UserRepo.create({
         ...createUserDto,
         uid: newUid,
