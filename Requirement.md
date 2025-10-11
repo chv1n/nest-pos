@@ -47,9 +47,9 @@
 [TODO]:
 [] Catagories 
     [/] Basic CRUD
-    [] validate categ name
+    [/] validate categ name
 [] Products 
-    [] Basic CRUD
+    [/] Basic CRUD
     [] UploadImage
 [] Inventory tracking
 [] low inventory alert
