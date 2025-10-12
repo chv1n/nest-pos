@@ -39,9 +39,10 @@ export class ProductsService {
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     try {
+      console.log("body",updateProductDto)
       const targetProduct = await this.findOne(id);
       if (!targetProduct) throw new HttpException("Update product failed!", HttpStatus.BAD_REQUEST);
-      const updated = Object.assign(targetProduct , updateProductDto);
+      const updated = Object.assign(targetProduct, updateProductDto);
       return await this.ProductRepo.save(updated);
     }
     catch (e) {
@@ -50,5 +51,10 @@ export class ProductsService {
     }
   }
 
+  async updateProductStock(id: string, amountToUpdate: number) {
+    const targetProduct = await this.findOne(id);
+    if (!targetProduct) throw new HttpException("Update product stock failed!", HttpStatus.BAD_REQUEST);
+    return  this.update(id, {stock: targetProduct.stock - amountToUpdate})
+  }
 
 }
