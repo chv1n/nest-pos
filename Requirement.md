@@ -48,9 +48,9 @@
 [/] Catagories 
     [/] Basic CRUD
     [/] validate categ name
-[] Products 
+[] Products
     [/] Basic CRUD
-    [] UploadImage
+    [/] UploadImage
 [/] Inventory tracking
 [] low inventory alert
 ==============================================================
