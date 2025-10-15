@@ -45,13 +45,13 @@
 การแจ้งเตือนสต็อกต่ำ: ระบบต้องแจ้งเตือนผู้จัดการเมื่อสต็อกของสินค้าลดลงต่ำกว่าเกณฑ์ที่กำหนดไว้ล่วงหน้า
 
 [TODO]:
-[] Catagories 
+[/] Catagories 
     [/] Basic CRUD
     [/] validate categ name
-[] Products 
+[] Products
     [/] Basic CRUD
-    [] UploadImage
-[] Inventory tracking
+    [/] UploadImage
+[/] Inventory tracking
 [] low inventory alert
 ==============================================================
 
