@@ -18,8 +18,8 @@ export class Product {
     @Column()
     description: string;
 
-    @Column('int', {default: 0})
-    stock: number;
+    // @Column('int', {default: 0})
+    // stock: number;
 
     @Column({default : true})
     is_active: boolean;
