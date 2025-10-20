@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 
 export const AppModules = [
@@ -11,4 +12,5 @@ export const AppModules = [
     RolesModule,
     CategoriesModule,
     ProductsModule,
+    TransactionModule,
 ];
