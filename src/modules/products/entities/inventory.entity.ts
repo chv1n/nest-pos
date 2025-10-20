@@ -8,7 +8,7 @@ export class Inventory {
     @JoinColumn({ name: 'product_id' })
     product: Product;
 
-    @Column()
+    @Column('int')
     current_stock: number;
 
     @Column('int')
