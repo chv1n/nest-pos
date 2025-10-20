@@ -5,7 +5,7 @@ export class Sales {
     @PrimaryColumn()
     sales_id : string;
 
-    @Column()
+    @CreateDateColumn()
     sales_data : Date;
 
     @Column()
@@ -16,7 +16,6 @@ export class Sales {
 
     @Column()
     paid_amount: number;
+    details: any;
 
-    @Column()
-    change_amount : number;
 }
