@@ -4,9 +4,8 @@ import { Product } from "./product.entity";
 @Entity({ name: "inventory" })
 export class Inventory {
     @PrimaryColumn()
-    @OneToOne(() => Product, (product) => product.inventory)
-    @JoinColumn({ name: 'product_id' })
-    product: Product;
+    product_id : string;
+
 
     @Column('int')
     current_stock: number;
@@ -16,4 +15,8 @@ export class Inventory {
 
     @UpdateDateColumn()
     last_updated: Date;
+
+    @OneToOne(() => Product, (product) => product.inventory)
+    @JoinColumn({ name: 'product_id' })
+    product: Product;
 }
