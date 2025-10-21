@@ -1,6 +1,7 @@
 import { Category } from 'src/modules/categories/entities/category.entity'
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm'
 import { Inventory } from './inventory.entity';
+import { SaleDetail } from '../../transaction/entities/sales-detail.entity';
 
 @Entity('products')
 export class Product {
@@ -22,14 +23,7 @@ export class Product {
     @Column({ default: true })
     is_active: boolean;
 
-    @OneToOne(() => Inventory, (inventory) => inventory.product)
-    inventory: Inventory;
-
-    @ManyToOne(() => Category, category => category.products)
-    @JoinColumn({ name: 'category_id' })
-    category: Category;
-
-    @Column({ name: 'category_id' })
+    @Column()
     category_id: string;
 
     @CreateDateColumn()
@@ -37,4 +31,14 @@ export class Product {
 
     @UpdateDateColumn()
     update_at: Date;
+
+    @OneToOne(() => Inventory, inventory => inventory.product)
+    inventory: Inventory;
+
+    @OneToMany(() => SaleDetail, saleDetail => saleDetail.product)
+    sale_details: SaleDetail[];
+
+    @ManyToOne(() => Category, category => category.products)
+    @JoinColumn({ name: 'category_id' })
+    category: Category;
 }
