@@ -17,6 +17,7 @@ export class Sales {
 
     @Column()
     paid_amount: number;
+    details: any;
 
     @OneToMany(() => SaleDetail, saleDetail => saleDetail.sale)
     details: SaleDetail;
