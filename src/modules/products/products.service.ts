@@ -4,7 +4,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import e from 'express';
 
 @Injectable()
 export class ProductsService {
@@ -51,10 +50,6 @@ export class ProductsService {
     }
   }
 
-  async updateProductStock(id: string, amountToUpdate: number) {
-    const targetProduct = await this.findOne(id);
-    if (!targetProduct) throw new HttpException("Update product stock failed!", HttpStatus.BAD_REQUEST);
-    return  this.update(id, {stock: targetProduct.stock - amountToUpdate})
-  }
+
 
 }

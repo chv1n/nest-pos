@@ -23,9 +23,6 @@ export class Product {
     @Column({ default: true })
     is_active: boolean;
 
-    @OneToOne(() => Inventory, (inventory) => inventory.product)
-    inventory: Inventory;
-
     @Column()
     category_id: string;
 
@@ -34,6 +31,9 @@ export class Product {
 
     @UpdateDateColumn()
     update_at: Date;
+
+    @OneToOne(() => Inventory, inventory => inventory.product)
+    inventory: Inventory;
 
     @OneToMany(() => SaleDetail, saleDetail => saleDetail.product)
     sale_details: SaleDetail[];
