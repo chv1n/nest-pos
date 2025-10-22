@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import { SaleDetail } from "./sales-detail.entity";
 
 @Entity({ name: "sales" })
 export class Sales {
@@ -6,16 +7,18 @@ export class Sales {
     sales_id : string;
 
     @CreateDateColumn()
-    sales_data : Date;
+    sales_date : Date;
 
-    @Column()
-    user_id : string;
+    // @Column()
+    // user_id : string;
 
     @Column()
     total_amount : number;
 
     @Column()
     paid_amount: number;
-    details: any;
+
+    @OneToMany(() => SaleDetail, saleDetail => saleDetail.sale)
+    details: SaleDetail;
 
 }

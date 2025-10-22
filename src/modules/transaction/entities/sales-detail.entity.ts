@@ -24,7 +24,7 @@ export class SaleDetail {
     line_discount: number; 
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
-    lineTotal: number; 
+    line_total: number; 
 
     @ManyToOne(() => Sales, sale => sale.details)
     @JoinColumn({ name: 'sale_id' })
