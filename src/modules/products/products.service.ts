@@ -1,30 +1,33 @@
-import { HttpCode, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
-  constructor(@InjectRepository(Product) private readonly ProductRepo: Repository<Product>) { }
+  constructor(
+    @InjectRepository(Product)
+    private readonly ProductRepo: Repository<Product>,
+  ) {}
   async create(createProductDto: CreateProductDto) {
     try {
-      const lastProduct = await this.ProductRepo
-        .createQueryBuilder('p')
-        .orderBy('p.product_id', "DESC")
+      const lastProduct = await this.ProductRepo.createQueryBuilder('p')
+        .orderBy('p.product_id', 'DESC')
         .getOne();
-      const lastId = lastProduct ? parseInt(lastProduct.product_id.slice(4)) : 0;
-      const newId = `PROD0${lastId + 1}`
+      const lastId = lastProduct
+        ? parseInt(lastProduct.product_id.slice(4))
+        : 0;
+      const newId = `PROD0${lastId + 1}`;
       const created = Object.create({
         ...createProductDto,
-        product_id: newId
-      })
+        product_id: newId,
+      });
       return this.ProductRepo.save(created);
-    }
-    catch (e) {
-      console.error(e)
-      throw new HttpException("Create product failed", HttpStatus.BAD_REQUEST)
+    } catch (e) {
+      console.error(e);
+      throw new HttpException('Create product failed', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -38,18 +41,30 @@ export class ProductsService {
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     try {
-      console.log("body",updateProductDto)
+      console.log('body', updateProductDto);
       const targetProduct = await this.findOne(id);
-      if (!targetProduct) throw new HttpException("Update product failed!", HttpStatus.BAD_REQUEST);
+      if (!targetProduct)
+        throw new HttpException(
+          'Update product failed!',
+          HttpStatus.BAD_REQUEST,
+        );
       const updated = Object.assign(targetProduct, updateProductDto);
       return await this.ProductRepo.save(updated);
-    }
-    catch (e) {
-      console.error(e)
-      throw new HttpException("Update product failed!", HttpStatus.BAD_REQUEST);
+    } catch (e) {
+      console.error(e);
+      throw new HttpException('Update product failed!', HttpStatus.BAD_REQUEST);
     }
   }
 
-
-
+  async productIdExists(idArr: string[]): Promise<boolean> {
+    const existingProducts = await this.ProductRepo.find({
+      select: ['product_id'],
+      where: {
+        product_id: In(idArr),
+      },
+    });
+    const foundIds = existingProducts.map((p) => p.product_id);
+    const notFoundIds = idArr.filter((id) => !foundIds.includes(id));
+    return notFoundIds.length == 0;
+  }
 }
