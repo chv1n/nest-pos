@@ -1,15 +1,27 @@
-import { IsArray, IsNumber } from "class-validator";
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
+class ItemDto {
+  @IsString()
+  product_id: string;
 
-type items = {
-    product_id : string,
-    quantity : number,
+  @IsNumber()
+  quantity: number;
 }
 
 export class CreateSaleDto {
-    @IsArray()
-    items : items[];
+  @IsArray()
+  @ValidateNested({ each: true }) // ตรวจทุก element ใน array
+  @Type(() => ItemDto)
+  items: ItemDto[];
 
-    @IsNumber()
-    paid_amount : number;
+  @IsNumber()
+  @IsOptional()
+  paid_amount: number;
 }

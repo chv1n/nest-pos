@@ -5,29 +5,33 @@ import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
-
-
 @Injectable()
 export class CategoriesService {
-  constructor(@InjectRepository(Category)
-  private readonly CategRepo: Repository<Category>) { }
+  constructor(
+    @InjectRepository(Category)
+    private readonly CategRepo: Repository<Category>,
+  ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
     try {
-      const lastCateg = await this.CategRepo
-        .createQueryBuilder('c')
+      const lastCateg = await this.CategRepo.createQueryBuilder('c')
         .orderBy('c.categ_id', 'DESC')
-        .getOne()
-      const lastIdNumber = lastCateg ? parseInt(lastCateg.categ_id.slice(5)) : 0;
+        .getOne();
+      const lastIdNumber = lastCateg
+        ? parseInt(lastCateg.categ_id.slice(5))
+        : 0;
       const newId = `CATEG0${lastIdNumber + 1}`;
       const createCateg = this.CategRepo.create({
         categ_id: newId,
-        ...createCategoryDto
-      })
-      return await this.CategRepo.save(createCateg)
+        ...createCategoryDto,
+      });
+      return await this.CategRepo.save(createCateg);
     } catch (e) {
-      console.error("Error in category service : ", e)
-      throw new HttpException("Create category failed!", HttpStatus.BAD_REQUEST);
+      console.error('Error in category service : ', e);
+      throw new HttpException(
+        'Create category failed!',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -41,15 +45,20 @@ export class CategoriesService {
 
   async update(categ_id: string, updateCategoryDto: UpdateCategoryDto) {
     try {
-      const categ = await this.CategRepo.findOneBy({ categ_id })
-      if (!categ) throw new HttpException("Update Category failed.", HttpStatus.NOT_FOUND)
-      const updated = Object.assign(categ, updateCategoryDto)
-      return await this.CategRepo.save(updated)
+      const categ = await this.CategRepo.findOneBy({ categ_id });
+      if (!categ)
+        throw new HttpException(
+          'Update Category failed.',
+          HttpStatus.NOT_FOUND,
+        );
+      const updated = Object.assign(categ, updateCategoryDto);
+      return await this.CategRepo.save(updated);
     } catch (e) {
-      console.error(e)
-      throw new HttpException("Update Category failed.", HttpStatus.BAD_REQUEST)
+      console.error(e);
+      throw new HttpException(
+        'Update Category failed.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
-
-
 }
