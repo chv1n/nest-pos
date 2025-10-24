@@ -11,6 +11,7 @@ export class ProductsService {
     @InjectRepository(Product)
     private readonly ProductRepo: Repository<Product>,
   ) {}
+
   async create(createProductDto: CreateProductDto) {
     try {
       const lastProduct = await this.ProductRepo.createQueryBuilder('p')
@@ -20,10 +21,10 @@ export class ProductsService {
         ? parseInt(lastProduct.product_id.slice(4))
         : 0;
       const newId = `PROD0${lastId + 1}`;
-      const created = Object.create({
+      const created: CreateProductDto & { product_id: string } = {
         ...createProductDto,
         product_id: newId,
-      });
+      };
       return this.ProductRepo.save(created);
     } catch (e) {
       console.error(e);
@@ -41,7 +42,6 @@ export class ProductsService {
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     try {
-      console.log('body', updateProductDto);
       const targetProduct = await this.findOne(id);
       if (!targetProduct)
         throw new HttpException(
@@ -56,15 +56,20 @@ export class ProductsService {
     }
   }
 
-  async productIdExists(idArr: string[]): Promise<boolean> {
+  async productIdExists(
+    idArr: string[],
+  ): Promise<{ exists: boolean; existingProducts: Product[] }> {
     const existingProducts = await this.ProductRepo.find({
-      select: ['product_id'],
+      select: ['product_id', 'price'],
       where: {
         product_id: In(idArr),
+        is_active: true,
       },
     });
     const foundIds = existingProducts.map((p) => p.product_id);
     const notFoundIds = idArr.filter((id) => !foundIds.includes(id));
-    return notFoundIds.length == 0;
+    return notFoundIds.length === 0
+      ? { exists: true, existingProducts }
+      : { exists: false, existingProducts };
   }
 }
