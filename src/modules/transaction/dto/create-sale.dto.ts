@@ -1,13 +1,8 @@
-import {
-  IsArray,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ItemInput } from '../interfaces/item-input.interface';
 
-class ItemDto {
+class ItemDto implements ItemInput {
   @IsString()
   product_id: string;
 
@@ -17,11 +12,7 @@ class ItemDto {
 
 export class CreateSaleDto {
   @IsArray()
-  @ValidateNested({ each: true }) // ตรวจทุก element ใน array
+  @ValidateNested({ each: true })
   @Type(() => ItemDto)
   items: ItemDto[];
-
-  @IsNumber()
-  @IsOptional()
-  paid_amount: number;
 }
