@@ -3,7 +3,7 @@ import { Repository, ObjectLiteral } from 'typeorm';
 export async function createNewId<
   T extends ObjectLiteral,
   K extends keyof T & string,
->(repo: Repository<T>, prefix: string, field: keyof K): Promise<string> {
+>(repo: Repository<T>, prefix: string, field: K): Promise<string> {
   const lastRecord = await repo
     .createQueryBuilder('t')
     .select(`t.${String(field)}`, 'id')
