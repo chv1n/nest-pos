@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { PaymentController } from './payment.controller';
+import { CashStrategy } from './stratergies/cash.strategies';
 
 @Module({
-  controllers: [PaymentController],
-  providers: [PaymentService],
+  providers: [
+    CashStrategy,
+    {
+      provide: 'PAYMENT_STRATEGIES',
+      useFactory: (cash) => [cash],
+      inject: [CashStrategy],
+    },
+    PaymentService,
+  ],
+  exports: [PaymentService],
 })
 export class PaymentModule {}

@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { PaymentStrategy } from './interfaces/payment.interface';
+import { PaymentResult } from './interfaces/payment.result.interface';
 
 @Injectable()
 export class PaymentService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
-  }
+  constructor(
+    @Inject('PAYMENT_STRATEGIES')
+    private readonly strategies: PaymentStrategy[],
+  ) {}
 
-  findAll() {
-    return `This action returns all payment`;
-  }
+  processPayment(
+    type: string,
+    paidAmount: number,
+    totalAmount: number,
+  ): Promise<PaymentResult> {
+    const matchedStrategy = this.strategies.find((s) => s.getType() == type);
+    if (!matchedStrategy)
+      throw new HttpException(
+        'Incorrect payment strategies',
+        HttpStatus.BAD_REQUEST,
+      );
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
-  }
-
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+    const strategyResult = matchedStrategy.pay(paidAmount, totalAmount);
+    return strategyResult;
   }
 }
