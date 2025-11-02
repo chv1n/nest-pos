@@ -2,8 +2,8 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class PaymentRequestDto {
   @IsString()
-  type: string; // 'cash', 'stripe', ...
+  payment_type: string; //cash, promptpay
 
   @IsNumber()
-  amount: number;
+  paidAmount: number;
 }
