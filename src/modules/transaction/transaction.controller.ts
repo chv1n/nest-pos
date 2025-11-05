@@ -8,6 +8,6 @@ export class TransactionController {
 
   @Post()
   create(@Body() createSaleDto: CreateSaleDto) {
-    return this.transactionService.saleAndCutStock(createSaleDto);
+    return this.transactionService.getTotal(createSaleDto);
   }
 }
