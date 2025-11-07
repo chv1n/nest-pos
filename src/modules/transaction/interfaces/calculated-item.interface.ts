@@ -1,7 +1,7 @@
 export interface CalculatedItem {
   product_id: string;
-  quentity: number;
+  quantity: number;
   price: number;
   discount?: number;
-  total: number;
+  total_price: number;
 }
