@@ -1,4 +1,4 @@
-import { PaymentResult } from "./payment.result.interface";
+import { PaymentResult } from './payment.result.interface';
 
 export interface PaymentStrategy {
   pay(paidAmount: number, totalAmount: number): Promise<PaymentResult>;
