@@ -14,6 +14,12 @@ export class CreateProductDto {
   @IsOptional()
   description: string;
 
+  @IsNumber()
+  stock: number;
+
+  @IsNumber()
+  minimum_stock: number;
+
   @IsBoolean()
   @IsOptional()
   is_active: boolean;
