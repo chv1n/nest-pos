@@ -1,24 +1,39 @@
-import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { SaleDetail } from "./sales-detail.entity";
+import {
+  Column,
+  Entity,
+  PrimaryColumn,
+  CreateDateColumn,
+  OneToMany,
+  UpdateDateColumn,
+} from 'typeorm';
+import { SaleDetail } from './sales-detail.entity';
 
-@Entity({ name: "sales" })
+@Entity({ name: 'sales' })
 export class Sales {
-    @PrimaryColumn()
-    sales_id : string;
+  @PrimaryColumn()
+  sales_id: string;
 
-    @CreateDateColumn()
-    sales_date : Date;
+  @CreateDateColumn()
+  sales_date: Date;
 
-    // @Column()
-    // user_id : string;
+  @UpdateDateColumn({ nullable: true })
+  paid_date: Date;
 
-    @Column()
-    total_amount : number;
+  @Column()
+  total_amount: number;
 
-    @Column()
-    paid_amount: number;
+  @Column({ nullable: true })
+  change: number;
 
-    @OneToMany(() => SaleDetail, saleDetail => saleDetail.sale)
-    details: SaleDetail;
+  @Column({ nullable: true })
+  paid_amount: number;
 
+  @Column({ nullable: true })
+  payment_method: number;
+
+  @Column({ default: 'Pending' })
+  status: string;
+
+  @OneToMany(() => SaleDetail, (saleDetail) => saleDetail.sale)
+  details: SaleDetail;
 }
