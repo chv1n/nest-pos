@@ -1,8 +1,8 @@
 import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ItemInput } from '../interfaces/item-input.interface';
+import { ItemProduct } from '../interfaces/item-input.interface';
 
-class ItemDto implements ItemInput {
+class ItemDto implements ItemProduct {
   @IsString()
   product_id: string;
 

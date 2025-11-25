@@ -16,7 +16,7 @@ export class AuthController {
       httpOnly: true
     });
     return {
-      message : 'Login Successful!!'
+      role: req.user.role.role_name
     }; 
   }
 
