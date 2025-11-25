@@ -136,15 +136,15 @@ export class ProductsService {
       : { exists: false, existingProducts };
   }
 
-  // async cutStock(saleDetail: ItemProduct[]) {
-  //   // start transaction
-  //   const queryRunner = this.dataSource.createQueryRunner();
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
+  async cutStock(saleDetail: ItemProduct[]) {
+    // start transaction
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  //   try {
-  //     const inventoryRepo = queryRunner.manager.getRepository(Inventory);
+    try {
+      const inventoryRepo = queryRunner.manager.getRepository(Inventory);
 
-  //   } catch (e) {}
-  // }
+    } catch (e) {}
+  }
 }
