@@ -17,11 +17,13 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
+  @Roles('Cashier')
   @Get('all')
   findAll() {
     return this.categoriesService.findAll();
   }
 
+  @Roles('Cashier')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(id);
